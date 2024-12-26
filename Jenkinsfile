@@ -16,19 +16,16 @@ pipeline {
         }
         
     
-
-
-      stage('SonarQube Analysis') {
+stage('SonarQube Analysis') {
     steps {
         script {
-            // Define Maven tool
-            def mvn = tool 'Default Maven'
-            
-            // Run SonarQube analysis for the Maven project
-          
-            
-            // Run SonarQube scanner for each module
-            dir('back-end/eurekaserver') {
+            try {
+                // Run SonarQube analysis for Maven
+                def mvn = tool 'Default Maven'
+                withSonarQubeEnv('SonarQube') {
+                    sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
+                }
+                  dir('back-end/eurekaserver') {
                 withSonarQubeEnv('SonarQube') { // You should specify the name of the SonarQube server defined in Jenkins
                 sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
             }
@@ -40,9 +37,16 @@ pipeline {
                     -Dsonar.login=${SONARQUBE_TOKEN}
                 """
             }
+            } catch (Exception e) {
+                echo "Error in SonarQube analysis: ${e.getMessage()}"
+                currentBuild.result = 'FAILURE'
+                throw e  // Fail the build if the stage fails
+            }
         }
     }
 }
+
+    
 
 
         stage('Build Docker Images') {
