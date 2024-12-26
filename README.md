@@ -6,7 +6,7 @@ The Virtual Assistant project aims to develop an interactive application based o
 - **Prompt Analysis with Spring AI**: Utilizes Spring AI to analyze user prompts and understand their requests.
 - **Google Calendar and Tasks Integration**: Implements a microservice for seamless integration with Google Calendar, enabling users to manage events and tasks directly from the app.
 - **Gmail Management**: Implements a microservice to integrate with Gmail, allowing users to send and receive emails directly from the application.
-- **GPT-3 Interaction for Answering Questions**: Integrates the GPT-3 model to provide users with relevant answers to their questions.
+- **GPT-3 Interaction for Answering Questions**: Integrates the GPT-3 model to provide users with relevant answersss to their questions.
 
 ## Technical Architecture
 - **Microservices Architecture**: Divides the application into multiple modules for scalability and modularity.
