@@ -19,11 +19,25 @@ pipeline {
 
 
         stage('SonarQube Analysis') {
-          def mvn = tool 'Default Maven';
+          
+            steps {
+              def mvn = tool 'Default Maven';
           withSonarQubeEnv() {
             sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
           }
-          
+                script {
+                    // Run SonarQube scanner for each module
+                    dir('back-end/eurekaserver') {
+                        sh "sonar-scanner \
+                            -Dsonar.projectKey=Project-Java-app1 \
+                            -Dsonar.projectName='Project Java app1'\
+                            -Dsonar.host.url=${SONARQUBE_URL} \
+                            -Dsonar.login=${SONARQUBE_TOKEN}"
+                    }
+                    
+                    
+                }
+            }
         }
 
         stage('Build Docker Images') {
