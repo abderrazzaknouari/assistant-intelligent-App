@@ -15,14 +15,14 @@ pipeline {
             }
         }
         
-      stage('SonarQube Analysis') {
-        def mvn = tool 'Default Maven';
-          withSonarQubeEnv() {
-            sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
-    }
+    
 
 
         stage('SonarQube Analysis') {
+          def mvn = tool 'Default Maven';
+          withSonarQubeEnv() {
+            sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
+          }
             steps {
                 script {
                     // Run SonarQube scanner for each module
