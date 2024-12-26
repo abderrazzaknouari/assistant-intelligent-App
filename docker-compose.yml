@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  eurekaserver:
+    image: abderrazzaknouari/pi-eureka_server:latest
+    ports:
+      - "8761:8761"
+
+  gateway:
+    image: abderrazzaknouari/pi-gateway:latest
+    ports:
+      - "9090:9090"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka
+    depends_on:
+      - eurekaserver
+
+  gpt_server:
+    image: abderrazzaknouari/pi-gpt_server:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka
+    depends_on:
+      - eurekaserver
+
+  gmail_server:
+    image: abderrazzaknouari/pi-gmail_server:latest
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka
+    depends_on:
+      - eurekaserver
+
+  calendar_service:
+    image: abderrazzaknouari/pi-calendar_server:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka
+    depends_on:
+      - eurekaserver
+
+networks:
+  default:
+    name: pi-network
+    external: true

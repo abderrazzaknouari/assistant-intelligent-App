@@ -1,0 +1,47 @@
+jenkins:
+  systemMessage: "Configured via JCasC for Java Project"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  jobs:
+    - script: >
+        pipelineJob('JavaProject') {
+          description('Pipeline for Java project built via JCasC')
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url('https://github.com/your-username/your-repo.git')
+                    credentialsId('github-credentials-id') # Replace with Jenkins credentials ID
+                  }
+                  branches('*/main') # Replace "main" with your default branch
+                }
+              }
+              scriptPath('Jenkinsfile') # Path to your pipeline script in the repo
+            }
+          }
+          triggers {
+            scm('H/5 * * * *') # Polls GitHub for changes every 5 minutes
+          }
+        }
+  credentials:
+    system:
+      domainCredentials:
+        - credentials:
+            - basicSSHUserPrivateKey:
+                scope: GLOBAL
+                id: "github-credentials-id"
+                username: "your-username"
+                privateKeySource:
+                  directEntry:
+                    privateKey: |
+                      -----BEGIN OPENSSH PRIVATE KEY-----
+                      YourPrivateKeyHere
+                      -----END OPENSSH PRIVATE KEY-----
