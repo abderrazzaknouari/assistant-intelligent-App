@@ -17,6 +17,41 @@ pipeline {
         
     
 stage('SonarQube Analysis') {
+            steps {
+                script {
+                  try {
+              dir('back-end/eurekaserver') {
+                // Run SonarQube analysis for Maven
+                def mvn = tool 'Default Maven'
+                withSonarQubeEnv('SonarQube') {
+                    sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
+                }  
+                }
+
+              dir('back-end/gateway') {
+
+              }
+              dir('back-end/Promp_GPT') {
+
+              }
+              dir('back-end/gmail-service') {
+
+              }
+              dir('back-end/calendar-service') {
+
+              }
+                  }
+            } catch (Exception e) {
+                echo "Error in SonarQube analysis: ${e.getMessage()}"
+                currentBuild.result = 'FAILURE'
+                throw e  // Fail the build if the stage fails
+            }
+
+                }
+            }
+        }
+
+stage('SonarQube Analysis') {
     steps {
         script {
             try {
@@ -30,13 +65,6 @@ stage('SonarQube Analysis') {
                 withSonarQubeEnv('SonarQube') { // You should specify the name of the SonarQube server defined in Jenkins
                 sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
             }
-                sh """
-                sonar-scanner \
-                    -Dsonar.projectKey=Project-Java-app1 \
-                    -Dsonar.projectName='Project Java app1' \
-                    -Dsonar.host.url=${SONARQUBE_URL} \
-                    -Dsonar.login=${SONARQUBE_TOKEN}
-                """
                   }
             } catch (Exception e) {
                 echo "Error in SonarQube analysis: ${e.getMessage()}"
@@ -108,4 +136,4 @@ stage('SonarQube Analysis') {
             sh 'docker logout'
         }
     }
-}
+
