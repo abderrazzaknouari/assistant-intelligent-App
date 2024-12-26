@@ -15,49 +15,49 @@ pipeline {
             }
         }
         
-        node {
 
-}
+
 
         stage('SonarQube Analysis') {
-          def mvn = tool 'Default Maven';
             steps {
                 script {
                     // Run SonarQube scanner for each module
                     dir('back-end/eurekaserver') {
-                        withSonarQubeEnv() {
-                          sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
-                          }
+                        sh "sonar-scanner \
+                            -Dsonar.projectKey=Project-Java-app1 \
+                            -Dsonar.projectName='Project Java app1'\
+                            -Dsonar.host.url=${SONARQUBE_URL} \
+                            -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
                     
                     dir('back-end/gateway') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=Project-Java-app \
-                            -Dsonar.projectName='Project Java app'\
+                            -Dsonar.projectKey=Project-Java-app1 \
+                            -Dsonar.projectName='Project Java app1'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
                     
                     dir('back-end/Promp_GPT') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=Project-Java-app \
-                            -Dsonar.projectName='Project Java app'\
+                            -Dsonar.projectKey=Project-Java-app1 \
+                            -Dsonar.projectName='Project Java app1'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
                     
                     dir('back-end/gmail-service') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=Project-Java-app \
-                            -Dsonar.projectName='Project Java app'\
+                            -Dsonar.projectKey=Project-Java-app1 \
+                            -Dsonar.projectName='Project Java app1'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
                     
                     dir('back-end/calendar-service') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=Project-Java-app \
-                            -Dsonar.projectName='Project Java app'\
+                            -Dsonar.projectKey=Project-Java-app1 \
+                            -Dsonar.projectName='Project Java app1'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
