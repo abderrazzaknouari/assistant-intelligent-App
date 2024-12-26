@@ -25,12 +25,13 @@ pipeline {
             def mvn = tool 'Default Maven'
             
             // Run SonarQube analysis for the Maven project
-            withSonarQubeEnv('SonarQube') { // You should specify the name of the SonarQube server defined in Jenkins
-                sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
-            }
+          
             
             // Run SonarQube scanner for each module
             dir('back-end/eurekaserver') {
+                withSonarQubeEnv('SonarQube') { // You should specify the name of the SonarQube server defined in Jenkins
+                sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
+            }
                 sh """
                 sonar-scanner \
                     -Dsonar.projectKey=Project-Java-app1 \
