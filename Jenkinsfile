@@ -19,6 +19,9 @@ pipeline {
 
 
       stage('SonarQube Analysis') {
+         when {
+        branch 'main'  // Ensure it runs on the main branch or any condition
+    }
     steps {
         script {
             // Define Maven tool
