@@ -17,39 +17,42 @@ pipeline {
         
     
 stage('SonarQube Analysis') {
-            steps {
-                script {
-                  try {
-              dir('back-end/eurekaserver') {
-                // Run SonarQube analysis for Maven
+    steps {
+        script {
+            try {
+                // Define common properties for SonarQube analysis
                 def mvn = tool 'Default Maven'
-                withSonarQubeEnv('SonarQube') {
-                    sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Project-Java-app1 -Dsonar.projectName='Project Java app1'"
-                }  
+                def sonarProjectKey = 'Project-Java-app1'
+                def sonarProjectName = 'Project Java app1'
+
+                // List of directories to analyze
+                def directories = [
+                    'back-end/eurekaserver',
+                    'back-end/gateway',
+                    'back-end/Promp_GPT',
+                    'back-end/gmail-service',
+                    'back-end/calendar-service'
+                ]
+
+                // Run SonarQube analysis for each directory
+                directories.each { dirPath ->
+                    dir(dirPath) {
+                        withSonarQubeEnv('SonarQube') {
+                            sh "${mvn}/bin/mvn clean verify sonar:sonar " +
+                               "-Dsonar.projectKey=${sonarProjectKey} " +
+                               "-Dsonar.projectName='${sonarProjectName}'"
+                        }
+                    }
                 }
-
-              dir('back-end/gateway') {
-
-              }
-              dir('back-end/Promp_GPT') {
-
-              }
-              dir('back-end/gmail-service') {
-
-              }
-              dir('back-end/calendar-service') {
-
-              }
-                  }
             } catch (Exception e) {
                 echo "Error in SonarQube analysis: ${e.getMessage()}"
                 currentBuild.result = 'FAILURE'
                 throw e  // Fail the build if the stage fails
             }
-
-                }
-            }
         }
+    }
+}
+
 
 stage('SonarQube Analysis') {
     steps {
