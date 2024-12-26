@@ -21,40 +21,40 @@ pipeline {
                     // Run SonarQube scanner for each module
                     dir('back-end/eurekaserver') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=eurekaserver \
-                            -Dsonar.sources=. \
+                            -Dsonar.projectKey=Project-Java-app \
+                            -Dsonar.projectName='Project Java app'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
                     
                     dir('back-end/gateway') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=gateway \
-                            -Dsonar.sources=. \
+                            -Dsonar.projectKey=Project-Java-app \
+                            -Dsonar.projectName='Project Java app'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
                     
                     dir('back-end/Promp_GPT') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=gpt-server \
-                            -Dsonar.sources=. \
+                            -Dsonar.projectKey=Project-Java-app \
+                            -Dsonar.projectName='Project Java app'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
                     
                     dir('back-end/gmail-service') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=gmail-service \
-                            -Dsonar.sources=. \
+                            -Dsonar.projectKey=Project-Java-app \
+                            -Dsonar.projectName='Project Java app'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
                     
                     dir('back-end/calendar-service') {
                         sh "sonar-scanner \
-                            -Dsonar.projectKey=calendar-service \
-                            -Dsonar.sources=. \
+                            -Dsonar.projectKey=Project-Java-app \
+                            -Dsonar.projectName='Project Java app'\
                             -Dsonar.host.url=${SONARQUBE_URL} \
                             -Dsonar.login=${SONARQUBE_TOKEN}"
                     }
